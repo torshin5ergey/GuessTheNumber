@@ -1,5 +1,5 @@
-![GTD Logo](/source/IMG_1284.PNG)
 # Guess The Number
+![GTD Logo](/source/IMG_1284.PNG)
 
 Guess The Number is a game where you must use your logic (in order) to guess a secret number, selected by computer.
 
