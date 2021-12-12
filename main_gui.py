@@ -1,91 +1,116 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-from tkinter.constants import LEFT, N, W
+from tkinter.constants import LEFT, N, W, TOP, Y, X
+from random import randrange
 
 
-def new_play_window():
-    level_window.destroy()
-    play_window = tk.Toplevel(root)
-    play_window.title('GuessTheNumber')
-    play_window.geometry('500x500')
-    play_window.resizable(width=False, height=False)
+def change_to_game():
+    frame_playgame.pack()
+    frame_pickLvL.forget()
 
 
 root = tk.Tk()
-root.withdraw()
-
-level_window = tk.Tk()
-level_window.iconbitmap('source/gtn_icon.ico')
-level_window.title('GuessTheNumber')
-level_window.geometry('500x520')
-level_window.resizable(width=False, height=False)
+root.iconbitmap('source/gtn_icon.ico')
+root.title('GuessTheNumber')
+root.geometry('500x520')
+root.resizable(width=False, height=False)
 
 image_file = Image.open('source/gtn_logo.png')
 resized_image = image_file.resize((472, 130))
 image_logo = ImageTk.PhotoImage(resized_image)
 
 lbl_logo = tk.Label(image=image_logo)
-lbl_htp = tk.Label(level_window,
-                   text='How to Play',
-                   font='Arial 20')
-lbl_htp_text = tk.Label(level_window,
-                        text='The program will pick a secret number.\n'
-                             'You guess what number is it.\n'
-                             '\nPick a difficulty level and press "Start"',
-                        font='Arial 14',
-                        justify=LEFT)
-framelvl = tk.Frame(level_window)
+lbl_logo.pack(expand=1)
 
-lbl_lvleasy = tk.Label(framelvl,
-                       text='Easy',
-                       font='Arial 15',
-                       foreground='#004d00',
-                       width=15)
-lbl_lvleasy_text = tk.Label(framelvl,
-                            text='(1 to 10)',
-                            font='Arial 10')
-lbl_lvlnormal = tk.Label(framelvl,
-                         text='Normal',
-                         font='Arial 15',
-                         foreground='#f48f00',
-                         width=15)
-lbl_lvlnormal_text = tk.Label(framelvl,
-                              text='(1 to 100)',
-                              font='Arial 10')
-lbl_lvlhard = tk.Label(framelvl,
-                       text='Hard',
-                       font='Arial 15',
-                       foreground='#7b000f',
-                       width=15)
-lbl_lvlhard_text = tk.Label(framelvl,
-                            text='(-100 to 100)',
-                            font='Arial 10')
+lbl_htp = tk.Label(root, text='The program will pick a secret number. You guess '
+                              'what number is it.\n'
+                              'Pick a difficulty and press "Start".',
+                   font='Arial 10',
+                   justify=LEFT)
+lbl_htp.pack(expand=Y)
 
-picked_level = tk.IntVar()
-picked_level.set(0)
-rad_easy = tk.Radiobutton(framelvl, variable=picked_level, value=0)
-rad_normal = tk.Radiobutton(framelvl, variable=picked_level, value=1)
-rad_hard = tk.Radiobutton(framelvl, variable=picked_level, value=2)
-btn_start = tk.Button(framelvl,
-                      text='Start game',
+frame_pickLvL = tk.Frame(root)
+frame_pickLvL.pack(expand=1, fill=Y)
+frame_row1 = tk.Frame(frame_pickLvL)
+frame_row1.pack(fill=Y)
+frame_row2 = tk.Frame(frame_pickLvL)
+frame_row2.pack(fill=Y)
+frame_row3 = tk.Frame(frame_pickLvL)
+frame_row3.pack(fill=Y)
+diff_level = tk.IntVar()
+diff_level.set(0)
+rad_easy = tk.Radiobutton(frame_row1,
+                          text='Easy',
+                          font='Arial 15',
+                          foreground='#004d00',
+                          width=8,
+                          variable=diff_level,
+                          value=0,
+                          indicator=False)
+rad_easy.pack(side=LEFT, pady=5)
+rad_normal = tk.Radiobutton(frame_row2,
+                            text='Normal',
+                            font='Arial 15',
+                            foreground='#f48f00',
+                            width=8,
+                            variable=diff_level,
+                            value=1,
+                            indicator=False)
+rad_normal.pack(side=LEFT, pady=5)
+rad_hard = tk.Radiobutton(frame_row3,
+                          text='Hard',
+                          font='Arial 15',
+                          foreground='#7b000f',
+                          width=8,
+                          variable=diff_level,
+                          value=2,
+                          indicator=False)
+rad_hard.pack(side=LEFT, pady=5)
+
+lbl_easy_text = tk.Label(frame_row1,
+                         text='(0 to 10)',
+                         font='Arial 10',
+                         width=10)
+lbl_easy_text.pack(pady=5, expand=1)
+
+lbl_normal_text = tk.Label(frame_row2,
+                           text='(0 to 100)',
+                           font='Arial 10',
+                           width=10)
+lbl_normal_text.pack(pady=5, expand=1)
+
+lbl_hard_text = tk.Label(frame_row3,
+                         text='(-100 to 100)',
+                         font='Arial 10',
+                         width=10)
+lbl_hard_text.pack(pady=5, expand=1)
+
+btn_start = tk.Button(frame_pickLvL,
+                      text='Start',
                       font='Arial 20',
                       width=10, height=1,
-                      command=new_play_window)
+                      command=change_to_game)
+btn_start.pack(pady=(20, 0))
 
-lbl_logo.grid(row=0, column=0, sticky=N, columnspan=3)
-lbl_htp.grid(row=1, column=0, sticky=N, columnspan=3, pady=(20, 0))
-lbl_htp_text.grid(row=2, column=0, sticky=N, columnspan=3, pady=(0, 30))
-framelvl.grid(row=3, column=0, columnspan=3)
-btn_start.grid(row=4, column=0, columnspan=3, pady=30)
+frame_playgame = tk.Frame(root)
 
-lbl_lvleasy.grid(row=0, column=0)
-lbl_lvlnormal.grid(row=0, column=1)
-lbl_lvlhard.grid(row=0, column=2)
-lbl_lvleasy_text.grid(row=1, column=0)
-lbl_lvlnormal_text.grid(row=1, column=1)
-lbl_lvlhard_text.grid(row=1, column=2)
-rad_easy.grid(row=2, column=0)
-rad_normal.grid(row=2, column=1)
-rad_hard.grid(row=2, column=2)
+if diff_level == 0:
+    low_num, high_num = 1, 10
+    goal_num = randrange(low_num, high_num)
+    turns_cap, turns_left = 6, 5
+elif diff_level == 1:
+    low_num, high_num = 1, 100
+    goal_num = randrange(low_num, high_num)
+    turns_cap, turns_left = 8, 7
+elif diff_level == 2:
+    low_num, high_num = -100, 100
+    goal_num = randrange(low_num, high_num)
+    turns_cap, turns_left = 11, 10
 
-level_window.mainloop()
+print(diff_level)
+
+lbl_game_tips = tk.Label(frame_playgame,
+                         text='Pick a number between')
+lbl_game_tips.pack()
+
+root.mainloop()
